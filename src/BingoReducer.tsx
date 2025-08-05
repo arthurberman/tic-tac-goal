@@ -31,7 +31,17 @@ function bingoReducer(state: BingoState, action: BingoAction): BingoState {
   return { cells: new_array };
 }
 
-const verbs = ["Sleep", "Wonder", "Build", "Link"];
+const verbs = [
+  "Sleep",
+  "Wonder",
+  "Build",
+  "Link",
+  "Spin",
+  "Wiggle",
+  "Blunder",
+  "Fail",
+  "Will",
+];
 export function useBingo() {
   const cells: CellState[] = [];
   for (const [index, verb] of verbs.entries()) {

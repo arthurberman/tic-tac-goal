@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBingo, type BingoState, type CellState } from "./BingoReducer";
 import { Cell } from "./Cell";
 
@@ -9,6 +9,9 @@ function checkVictory(state: BingoState, width: number = 3): boolean {
   for (let y = 0; y < mapHeight; y++) {
     const row: boolean[] = [];
     for (let x = 0; x < width; x++) {
+      if (i >= state.cells.length) {
+        continue;
+      }
       if (state.cells[i].status == "checked") {
         row.push(true);
       } else {
@@ -19,7 +22,33 @@ function checkVictory(state: BingoState, width: number = 3): boolean {
 
     victoryMap.push(row);
   }
-  console.log(victoryMap);
+  // check rows:
+  for (const row of victoryMap) {
+    if (row.every((cell: boolean) => cell)) {
+      return true;
+    }
+  }
+  // check columns:
+  for (let x = 0; x < width; x++) {
+    if (victoryMap.every((row) => row[x])) {
+      return true;
+    }
+  }
+  // check diagonals
+  let diagonalSolution = true;
+  for (let diagonal = 0; diagonal < width && diagonal < mapHeight; diagonal++) {
+    if (!victoryMap[diagonal][diagonal]) diagonalSolution = false;
+  }
+  if (diagonalSolution) {
+    return true;
+  }
+  diagonalSolution = true;
+  for (let diagonal = 0; diagonal < width && diagonal < mapHeight; diagonal++) {
+    if (!victoryMap[diagonal][width - diagonal - 1]) diagonalSolution = false;
+  }
+  if (diagonalSolution) {
+    return true;
+  }
   return false;
 }
 
@@ -27,24 +56,35 @@ function Bingo() {
   const width = 3;
   const { state, toggle } = useBingo();
 
+  const [winState, setWin] = useState(false);
+
   useEffect(() => {
-    try {
-      const victory = checkVictory(state, width);
-    } catch (_) {}
+    const victory = checkVictory(state, width);
+    setWin(victory);
   }, [state]);
 
   const formattedCells: CellState[][] = [];
   const mapHeight = state.cells.length / width;
+  for (let y = 0; y < mapHeight; y++) {
+    formattedCells.push(state.cells.slice(y * width, y * width + width));
+  }
+  if (winState) {
+    return <p>Victory</p>;
+  }
 
   return (
     <table>
-      <tr>
-        {state.cells.map((cell) => (
-          <td>
-            <Cell cell={cell} toggle={toggle} />
-          </td>
+      <tbody>
+        {formattedCells.map((cells) => (
+          <tr>
+            {cells.map((cell) => (
+              <td>
+                <Cell key={cell.id} cell={cell} toggle={toggle} />
+              </td>
+            ))}
+          </tr>
         ))}
-      </tr>
+      </tbody>
     </table>
   );
 }
