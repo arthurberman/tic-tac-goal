@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBingo, type BingoState, type CellState } from "./BingoReducer";
 import { Cell } from "./Cell";
+import Victory from "./Victory";
 
-function checkVictory(state: BingoState, width: number = 3): boolean {
+function mapVictory(state: BingoState, width: number = 3) {
   const victoryMap: boolean[][] = [];
   const mapHeight = state.cells.length / width;
   let i = 0;
@@ -22,6 +23,11 @@ function checkVictory(state: BingoState, width: number = 3): boolean {
 
     victoryMap.push(row);
   }
+  return { victoryMap, mapHeight };
+}
+
+function checkVictory(state: BingoState, width: number = 3): boolean {
+  const { victoryMap, mapHeight } = mapVictory(state);
   // check rows:
   for (const row of victoryMap) {
     if (row.every((cell: boolean) => cell)) {
@@ -56,36 +62,45 @@ function Bingo() {
   const width = 3;
   const { state, toggle } = useBingo();
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [winState, setWin] = useState(false);
 
   useEffect(() => {
     const victory = checkVictory(state, width);
     setWin(victory);
   }, [state]);
-
+  useEffect(() => {
+    if (winState) {
+      if (!dialogRef.current) {
+        return;
+      }
+      dialogRef.current.showModal();
+    }
+  }, [winState]);
   const formattedCells: CellState[][] = [];
   const mapHeight = state.cells.length / width;
   for (let y = 0; y < mapHeight; y++) {
     formattedCells.push(state.cells.slice(y * width, y * width + width));
   }
-  if (winState) {
-    return <p>Victory</p>;
-  }
-
   return (
-    <table>
-      <tbody>
-        {formattedCells.map((cells) => (
-          <tr>
-            {cells.map((cell) => (
-              <td>
-                <Cell key={cell.id} cell={cell} toggle={toggle} />
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      {winState && (
+        <Victory ref={dialogRef} cells={mapVictory(state, width).victoryMap} />
+      )}
+      <table>
+        <tbody>
+          {formattedCells.map((cells) => (
+            <tr>
+              {cells.map((cell) => (
+                <td>
+                  <Cell key={cell.id} cell={cell} toggle={toggle} />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 export default Bingo;
