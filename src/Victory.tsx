@@ -6,7 +6,7 @@ interface VictoryProps {
 }
 
 const Victory: React.FC<VictoryProps> = ({ cells, ref }) => {
-  const rewardRef = useRef<HTMLTableElement>(null);
+  const rewardRef = useRef<HTMLDivElement>(null);
   const copyReward = useCallback(() => {
     if (!rewardRef.current) {
       return;
@@ -15,17 +15,24 @@ const Victory: React.FC<VictoryProps> = ({ cells, ref }) => {
   }, [rewardRef]);
   return (
     <dialog ref={ref}>
-      <table ref={rewardRef}>
-        <tbody>
-          {cells.map((cells) => (
-            <tr>
-              {cells.map((cell) => (
-                <td>{cell ? "🟢" : "🟠"}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div
+        className="reward"
+        ref={rewardRef}
+        style={{ justifyItems: "center" }}
+      >
+        <table>
+          <tbody>
+            {cells.map((cells) => (
+              <tr>
+                {cells.map((cell) => (
+                  <td>{cell ? "🟢" : "🟠"}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <a href={window.location.href}>{window.location.href}</a>
+      </div>
       <button onClick={copyReward}>Copy</button>
     </dialog>
   );

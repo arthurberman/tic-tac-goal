@@ -14,6 +14,7 @@ export const Cell: React.FC<CellProps> = ({ cell, toggle }) => {
       type="button"
       onClick={clickCheck}
       style={{
+        width: "100%",
         backgroundColor: cell.status == "checked" ? "greenyellow" : "orange",
       }}
     >

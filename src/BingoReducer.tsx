@@ -32,13 +32,13 @@ function bingoReducer(state: BingoState, action: BingoAction): BingoState {
 }
 
 const verbs = [
-  "Sleep",
-  "Wonder",
-  "Build",
-  "Link",
-  "Spin",
-  "Wiggle",
+  "Sleep Well",
   "Blunder",
+  "Be Curious",
+  "Build",
+  "Connect",
+  "Care",
+  "Move",
   "Fail",
   "Will",
 ];
