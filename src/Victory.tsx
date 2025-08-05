@@ -1,5 +1,3 @@
-import { useRef, type DialogHTMLAttributes } from "react";
-
 interface VictoryProps {
   cells: boolean[][];
   ref: React.RefObject<any>;
