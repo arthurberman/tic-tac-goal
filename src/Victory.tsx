@@ -1,12 +1,21 @@
+import { useCallback, useRef } from "react";
+
 interface VictoryProps {
   cells: boolean[][];
-  ref: React.RefObject<any>;
+  ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 const Victory: React.FC<VictoryProps> = ({ cells, ref }) => {
+  const rewardRef = useRef<HTMLTableElement>(null);
+  const copyReward = useCallback(() => {
+    if (!rewardRef.current) {
+      return;
+    }
+    navigator.clipboard.writeText(rewardRef.current.innerText);
+  }, [rewardRef]);
   return (
     <dialog ref={ref}>
-      <table>
+      <table ref={rewardRef}>
         <tbody>
           {cells.map((cells) => (
             <tr>
@@ -17,6 +26,7 @@ const Victory: React.FC<VictoryProps> = ({ cells, ref }) => {
           ))}
         </tbody>
       </table>
+      <button onClick={copyReward}>Copy</button>
     </dialog>
   );
 };

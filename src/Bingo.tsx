@@ -76,7 +76,7 @@ function Bingo() {
       }
       dialogRef.current.showModal();
     }
-  }, [winState]);
+  }, [winState, state]);
   const formattedCells: CellState[][] = [];
   const mapHeight = state.cells.length / width;
   for (let y = 0; y < mapHeight; y++) {
