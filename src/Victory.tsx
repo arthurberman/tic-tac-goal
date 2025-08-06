@@ -43,6 +43,8 @@ const Victory: React.FC<VictoryProps> = ({ cells, ref, dismiss }) => {
       <button style={{ justifySelf: "right" }} onClick={dismiss}>
         Keep Going
       </button>
+      <br />
+      <a href="https://forms.gle/wJj3JBmk3zWs69acA">Submit a Goal</a>
     </dialog>
   );
 };
