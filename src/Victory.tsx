@@ -21,9 +21,6 @@ const Victory: React.FC<VictoryProps> = ({ cells, ref, dismiss }) => {
         dismiss();
       }}
     >
-      <button style={{ justifySelf: "right" }} onClick={dismiss}>
-        x
-      </button>
       <div
         className="reward"
         ref={rewardRef}
@@ -43,6 +40,9 @@ const Victory: React.FC<VictoryProps> = ({ cells, ref, dismiss }) => {
         <a href={window.location.href}>{window.location.href}</a>
       </div>
       <button onClick={copyReward}>Copy</button>
+      <button style={{ justifySelf: "right" }} onClick={dismiss}>
+        Keep Going
+      </button>
     </dialog>
   );
 };

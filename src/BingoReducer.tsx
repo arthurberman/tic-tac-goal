@@ -48,11 +48,6 @@ const verbs = [
   "Make a Good Point",
 ];
 
-function recoverStorage(state: BingoState): BingoState {
-  var newState = { ...state };
-
-  return newState;
-}
 export function useBingo() {
   const cells: CellState[] = [];
   for (const [index, verb] of verbs.entries()) {
