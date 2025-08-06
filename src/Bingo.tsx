@@ -62,11 +62,12 @@ function checkVictory(state: BingoState, width: number = 3): boolean {
 
 function Bingo() {
   const width = 3;
-  const { state, toggle } = useBingo();
+  const { state, toggle, change } = useBingo();
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [winState, setWin] = useState(false);
   const [intro, setIntro] = useState(true);
+  const [showWin, setShowWin] = useState(true);
 
   useEffect(() => {
     const victory = checkVictory(state, width);
@@ -75,15 +76,27 @@ function Bingo() {
   useEffect(() => {
     if (winState) {
       if (!dialogRef.current) {
+        setShowWin(true);
         return;
       }
-      dialogRef.current.showModal();
+      const dialog = dialogRef.current;
+      dialog.showModal();
+      return () => dialog.close();
     }
   }, [winState, state]);
 
-  var dismissIntro = useCallback(() => {
-    setIntro(false);
-  }, [setIntro]);
+  var dismissIntro = useCallback(
+    (text?: String) => {
+      const changedCellId = 4;
+      if (text) change(changedCellId, text);
+      setIntro(false);
+      toggle(changedCellId);
+    },
+    [setIntro]
+  );
+  var dismissVictory = useCallback(() => {
+    setShowWin(false);
+  }, [setShowWin]);
   const formattedCells: CellState[][] = [];
   const mapHeight = state.cells.length / width;
   for (let y = 0; y < mapHeight; y++) {
@@ -94,8 +107,12 @@ function Bingo() {
     <div style={{ justifyItems: "center" }}>
       <h1>Tic-Tac-Goal</h1>
       {intro && <Intro dismiss={dismissIntro} />}
-      {winState && (
-        <Victory ref={dialogRef} cells={mapVictory(state, width).victoryMap} />
+      {winState && showWin && (
+        <Victory
+          ref={dialogRef}
+          cells={mapVictory(state, width).victoryMap}
+          dismiss={dismissVictory}
+        />
       )}
       <table className={intro ? "HiddenBingo" : "ReadyBingo"}>
         <tbody>

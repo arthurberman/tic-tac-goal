@@ -11,8 +11,9 @@ export interface BingoState {
 }
 
 interface BingoAction {
-  type: "check" | "uncheck";
+  type: "check" | "uncheck" | "change";
   id: number;
+  text?: String;
 }
 
 function bingoReducer(state: BingoState, action: BingoAction): BingoState {
@@ -27,6 +28,10 @@ function bingoReducer(state: BingoState, action: BingoAction): BingoState {
       break;
     case "uncheck":
       newState.status = "unchecked";
+      break;
+    case "change":
+      if (action.text) newState.text = action.text;
+      break;
   }
   return { cells: newArray };
 }
@@ -60,6 +65,9 @@ export function useBingo() {
   const uncheck = useCallback((id: number) => {
     dispatch({ type: "uncheck", id });
   }, []);
+  const change = useCallback((id: number, text: String) => {
+    dispatch({ type: "change", id, text });
+  }, []);
 
   const toggle = useCallback(
     (id: number) => {
@@ -75,5 +83,5 @@ export function useBingo() {
     },
     [state]
   );
-  return { state, check, uncheck, toggle };
+  return { state, change, check, uncheck, toggle };
 }
