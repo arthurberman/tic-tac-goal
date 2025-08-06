@@ -14,10 +14,10 @@ export const Cell: React.FC<CellProps> = ({ cell, toggle }) => {
       type="button"
       onClick={clickCheck}
       style={{
+        height: "100%",
         width: "100%",
         backgroundColor: cell.status == "checked" ? "greenyellow" : "orange",
         color: "black",
-        transition: "backgroundColor 1s",
       }}
     >
       {cell.text}
