@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./Bingo.css";
 import { useBingo, type BingoState, type CellState } from "./BingoReducer";
 import { Cell } from "./Cell";
+import Intro from "./Intro";
 import Victory from "./Victory";
 
 function mapVictory(state: BingoState, width: number = 3) {
@@ -64,6 +66,7 @@ function Bingo() {
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [winState, setWin] = useState(false);
+  const [intro, setIntro] = useState(true);
 
   useEffect(() => {
     const victory = checkVictory(state, width);
@@ -77,17 +80,24 @@ function Bingo() {
       dialogRef.current.showModal();
     }
   }, [winState, state]);
+
+  var dismissIntro = useCallback(() => {
+    setIntro(false);
+  }, [setIntro]);
   const formattedCells: CellState[][] = [];
   const mapHeight = state.cells.length / width;
   for (let y = 0; y < mapHeight; y++) {
     formattedCells.push(state.cells.slice(y * width, y * width + width));
   }
+
   return (
-    <div>
+    <div style={{ justifyItems: "center" }}>
+      <h1>Tic-Tac-Goal</h1>
+      {intro && <Intro dismiss={dismissIntro} />}
       {winState && (
         <Victory ref={dialogRef} cells={mapVictory(state, width).victoryMap} />
       )}
-      <table>
+      <table className={intro ? "HiddenBingo" : "ReadyBingo"}>
         <tbody>
           {formattedCells.map((cells) => (
             <tr>

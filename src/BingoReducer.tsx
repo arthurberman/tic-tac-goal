@@ -16,19 +16,19 @@ interface BingoAction {
 }
 
 function bingoReducer(state: BingoState, action: BingoAction): BingoState {
-  const new_array = [...state.cells];
-  const new_state = new_array.find((state: CellState) => state.id == action.id);
-  if (!new_state) {
+  const newArray = [...state.cells];
+  const newState = newArray.find((state: CellState) => state.id == action.id);
+  if (!newState) {
     return state;
   }
   switch (action.type) {
     case "check":
-      new_state.status = "checked";
+      newState.status = "checked";
       break;
     case "uncheck":
-      new_state.status = "unchecked";
+      newState.status = "unchecked";
   }
-  return { cells: new_array };
+  return { cells: newArray };
 }
 
 const verbs = [
@@ -42,6 +42,12 @@ const verbs = [
   "Fail",
   "Will",
 ];
+
+function recoverStorage(state: BingoState): BingoState {
+  var newState = { ...state };
+
+  return newState;
+}
 export function useBingo() {
   const cells: CellState[] = [];
   for (const [index, verb] of verbs.entries()) {
