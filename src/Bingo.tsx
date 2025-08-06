@@ -88,9 +88,11 @@ function Bingo() {
   var dismissIntro = useCallback(
     (text?: String) => {
       const changedCellId = 4;
-      if (text) change(changedCellId, text);
+      if (text) {
+        change(changedCellId, text);
+        toggle(changedCellId);
+      }
       setIntro(false);
-      toggle(changedCellId);
     },
     [setIntro]
   );

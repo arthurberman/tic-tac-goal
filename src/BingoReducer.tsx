@@ -37,15 +37,15 @@ function bingoReducer(state: BingoState, action: BingoAction): BingoState {
 }
 
 const verbs = [
-  "Sleep Well",
-  "Blunder",
-  "Be Curious",
-  "Build",
-  "Connect",
-  "Care",
-  "Move",
-  "Fail",
-  "Will",
+  "Be Polite",
+  "Meet People",
+  "Fix Something",
+  "Run an Errand",
+  "Beat the Odds",
+  "Make a Plan",
+  "Clean Something",
+  "Screen Calls",
+  "Make a Good Point",
 ];
 
 function recoverStorage(state: BingoState): BingoState {

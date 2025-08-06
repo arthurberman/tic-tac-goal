@@ -17,6 +17,7 @@ export const Cell: React.FC<CellProps> = ({ cell, toggle }) => {
         width: "100%",
         backgroundColor: cell.status == "checked" ? "greenyellow" : "orange",
         color: "black",
+        transition: "backgroundColor 1s",
       }}
     >
       {cell.text}
