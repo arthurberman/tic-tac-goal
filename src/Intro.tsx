@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState, type ChangeEvent } from "react";
 
 interface IntroProps {
   dismiss: (text?: String) => void;
@@ -13,14 +13,36 @@ const Intro: React.FC<IntroProps> = ({ dismiss }) => {
     },
     [dismiss]
   );
+
+  const [introState, setIntroState] = useState(false);
+
+  const inputChanged = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.value != "") {
+        setIntroState(true);
+      } else {
+        setIntroState(false);
+      }
+    },
+    [setIntroState]
+  );
+  const buttonText = introState ? "submit" : "skip";
   return (
-    <div style={{ backgroundColor: "orange", width: "80%", padding: "1vw" }}>
+    <div style={{ backgroundColor: "orange", width: "80%" }}>
       <form action={submitGoal}>
-        <input
-          name="goal"
-          style={{ width: "90%", height: "5em" }}
-          placeholder="What have you done already today?"
-        />
+        <div style={{ display: "inline-flex", padding: "1vh" }}>
+          <input
+            name="goal"
+            style={{ width: "90%", height: "5em" }}
+            onChange={inputChanged}
+            placeholder="What have you already done today?"
+          />
+          <input
+            type="submit"
+            value={buttonText}
+            style={{ backgroundColor: "red", height: "5em" }}
+          />
+        </div>
       </form>
     </div>
   );
