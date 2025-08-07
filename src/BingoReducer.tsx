@@ -37,15 +37,15 @@ function bingoReducer(state: BingoState, action: BingoAction): BingoState {
 }
 
 const verbs = [
-  "Be Polite",
-  "Meet People",
-  "Fix Something",
-  "Run an Errand",
+  "Do a crazy dance",
+  "Read the room",
+  "Go all out",
+  "Conserve Resources",
   "Beat the Odds",
-  "Make a Plan",
-  "Clean Something",
-  "Screen Calls",
-  "Make a Good Point",
+  "Spin",
+  "Make it Fast",
+  "Freeze!",
+  "Find the fun",
 ];
 
 export function useBingo() {
